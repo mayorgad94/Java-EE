@@ -25,7 +25,7 @@ public class PruebaWS {
 	}
 	
 	@WebMethod
-	public boolean reporte (
+	public boolean generarReportes (
 			@WebParam(name="dato")
 			Reporte reporte){
 		return oEjb.registrarReporte(reporte);

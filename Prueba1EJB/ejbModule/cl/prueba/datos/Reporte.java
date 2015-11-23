@@ -9,6 +9,14 @@ public class Reporte implements Serializable {
 	private String tipo;
 	private double latitud;					
 	private double longitud;
+	private String subTipo;
+	
+	public String getSubTipo() {
+		return subTipo;
+	}
+	public void setSubTipo(String subTipo) {
+		this.subTipo = subTipo;
+	}
 	public String getFecha() {
 		return fecha;
 	}

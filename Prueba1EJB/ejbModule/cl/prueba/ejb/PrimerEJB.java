@@ -71,13 +71,14 @@ public class PrimerEJB {
 			//Statement oStatement = oConexion.createStatement();
 			//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
 			
-			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,nombre,sexo,cod_ciudad from usuario where email=? and password=?");
+			PreparedStatement oPrepStatement = oConexion.prepareStatement(" INSERT INTO (reporte fecha,latitud,longitud,tipo,subtipo) VALUES (?,?,?,?,?,?,?,?)");
 			oPrepStatement.setString(1, reporte.getEmail());
 			oPrepStatement.setString(2, reporte.getFecha());
 			oPrepStatement.setString(3, reporte.getTipo());
 			oPrepStatement.setBytes(4, reporte.getFoto());
 			oPrepStatement.setDouble(5, reporte.getLatitud());
 			oPrepStatement.setDouble(6, reporte.getLongitud());
+			oPrepStatement.setString(7, reporte.getSubTipo());
 			oPrepStatement.execute();
 			resultado=true;
 			/*
@@ -101,12 +102,17 @@ public class PrimerEJB {
 			//Statement oStatement = oConexion.createStatement();
 			//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
 
-			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT foto,emailtipo,latitud,longitud from reportes where fecha=?");
+			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,tipo,latitud,longitud,subTipo from reportes where fecha=?");
 			oPrepStatement.setString(1, sFecha);
 			ResultSet resultado=oPrepStatement.executeQuery();
 			while(resultado.next())
 			{
 				Reporte reporte = new Reporte();
+				reporte.setEmail(resultado.getString("email"));
+				reporte.setTipo(resultado.getString("tipo"));
+				reporte.setLatitud(resultado.getDouble("latitud"));
+				reporte.setLatitud(resultado.getDouble("longitud"));
+				reporte.setSubTipo(resultado.getString("subTipo"));
 				reportes.add(reporte);
 			}
 			/*
@@ -137,6 +143,11 @@ public List<Reporte> filtrarTipo(String sTipo) {
 			while(resultado.next())
 			{
 				Reporte reporte = new Reporte();
+				reporte.setEmail(resultado.getString("email"));
+				reporte.setTipo(resultado.getString("tipo"));
+				reporte.setLatitud(resultado.getDouble("latitud"));
+				reporte.setLatitud(resultado.getDouble("longitud"));
+				reporte.setSubTipo(resultado.getString("subTipo"));
 				reportes.add(reporte);
 			}
 			/*
