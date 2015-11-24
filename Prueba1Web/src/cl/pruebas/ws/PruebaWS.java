@@ -24,6 +24,13 @@ public class PruebaWS {
 		return oEjb.login(sNombre, sPassword);
 	}
 	
+	public boolean registrar(
+			@WebParam(name="nombre")
+			String sEmail, String sPassword, String sNombre, String sApellido, String sCelular, String sFechaNacimiento,String sCiudad){
+		return oEjb.registro(sNombre, sPassword,sEmail,sApellido,sCelular,sFechaNacimiento,sCiudad);
+	}
+
+	
 	@WebMethod
 	public boolean generarReportes (
 			@WebParam(name="dato")
@@ -42,7 +49,7 @@ public class PruebaWS {
 	public List<Reporte> filtrarTipo(
 			@WebParam(name="dato")
 			String tipo){
-		return oEjb.buscaReportes(tipo);
+		return oEjb.filtrarTipo(tipo);
 	}
 }
 

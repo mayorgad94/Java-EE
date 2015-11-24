@@ -38,7 +38,7 @@ public class PrimerEJB {
 			//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
 			System.out.println("Nombre: " + sNombre);
 			System.out.println("Password: " + sPassword);
-			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,nombre,sexo,cod_ciudad from usuario where email=? and password=?");
+			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,nombre from usuario where email=? and password=?");
 			oPrepStatement.setString(1, sNombre);
 			oPrepStatement.setString(2, sPassword);
 			ResultSet resultado=oPrepStatement.executeQuery();
@@ -47,8 +47,7 @@ public class PrimerEJB {
 				usuario=new Usuario();
 				usuario.setEmail(resultado.getString("email"));
 				usuario.setNombre(resultado.getString("nombre"));
-				usuario.setSexo(resultado.getString("sexo"));
-				usuario.setCodCiudad(resultado.getString("cod_ciudad"));
+
 			}
 			/*
 			CallableStatement oCallStatement = oConexion.prepareCall("{call login (?,?)}");
@@ -71,14 +70,13 @@ public class PrimerEJB {
 			//Statement oStatement = oConexion.createStatement();
 			//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
 			
-			PreparedStatement oPrepStatement = oConexion.prepareStatement(" INSERT INTO (reporte fecha,latitud,longitud,tipo,subtipo) VALUES (?,?,?,?,?,?,?,?)");
-			oPrepStatement.setString(1, reporte.getEmail());
-			oPrepStatement.setString(2, reporte.getFecha());
-			oPrepStatement.setString(3, reporte.getTipo());
-			oPrepStatement.setBytes(4, reporte.getFoto());
-			oPrepStatement.setDouble(5, reporte.getLatitud());
-			oPrepStatement.setDouble(6, reporte.getLongitud());
-			oPrepStatement.setString(7, reporte.getSubTipo());
+			PreparedStatement oPrepStatement = oConexion.prepareStatement(" INSERT INTO reporte (fecha,tipo,latitud,longitud,sub_tipo,email) VALUES (?,?,?,?,?,?)");
+			oPrepStatement.setString(1, reporte.getFecha());
+			oPrepStatement.setString(2, reporte.getTipo());
+			oPrepStatement.setDouble(3, reporte.getLatitud());
+			oPrepStatement.setDouble(4, reporte.getLongitud());
+			oPrepStatement.setString(5, reporte.getSubTipo());
+			oPrepStatement.setString(6, reporte.getEmail());
 			oPrepStatement.execute();
 			resultado=true;
 			/*
@@ -102,7 +100,7 @@ public class PrimerEJB {
 			//Statement oStatement = oConexion.createStatement();
 			//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
 
-			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,tipo,latitud,longitud,subTipo from reportes where fecha=?");
+			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,tipo,latitud,longitud,sub_tipo from reporte where fecha=?");
 			oPrepStatement.setString(1, sFecha);
 			ResultSet resultado=oPrepStatement.executeQuery();
 			while(resultado.next())
@@ -111,8 +109,8 @@ public class PrimerEJB {
 				reporte.setEmail(resultado.getString("email"));
 				reporte.setTipo(resultado.getString("tipo"));
 				reporte.setLatitud(resultado.getDouble("latitud"));
-				reporte.setLatitud(resultado.getDouble("longitud"));
-				reporte.setSubTipo(resultado.getString("subTipo"));
+				reporte.setLongitud(resultado.getDouble("longitud"));
+				reporte.setSubTipo(resultado.getString("sub_tipo"));
 				reportes.add(reporte);
 			}
 			/*
@@ -137,7 +135,7 @@ public List<Reporte> filtrarTipo(String sTipo) {
 			//Statement oStatement = oConexion.createStatement();
 			//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
 
-			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT foto,emailtipo,latitud,longitud from reportes where fecha=?");
+			PreparedStatement oPrepStatement = oConexion.prepareStatement(" SELECT email,tipo,latitud,longitud,sub_tipo from reporte where tipo=?");
 			oPrepStatement.setString(1, sTipo);
 			ResultSet resultado=oPrepStatement.executeQuery();
 			while(resultado.next())
@@ -146,8 +144,8 @@ public List<Reporte> filtrarTipo(String sTipo) {
 				reporte.setEmail(resultado.getString("email"));
 				reporte.setTipo(resultado.getString("tipo"));
 				reporte.setLatitud(resultado.getDouble("latitud"));
-				reporte.setLatitud(resultado.getDouble("longitud"));
-				reporte.setSubTipo(resultado.getString("subTipo"));
+				reporte.setLongitud(resultado.getDouble("longitud"));
+				reporte.setSubTipo(resultado.getString("sub_tipo"));
 				reportes.add(reporte);
 			}
 			/*
@@ -160,5 +158,38 @@ public List<Reporte> filtrarTipo(String sTipo) {
 		}
 		
 		return reportes;
+	}
+
+public boolean registro(String sNombre, String sPassword, String sEmail, String sApellido, String sCelular,
+		String sFechaNacimiento, String sCiudad) {
+	// TODO Auto-generated method stub
+	boolean resultado=false;
+	
+	try {
+		Connection oConexion = oDataSource.getConnection();
+		
+		//Statement oStatement = oConexion.createStatement();
+		//oStatement.execute("INSERT INTO datos (nombre,rut) VALUES('" + sNombre + "','"+ sPassword+"')");
+		
+		PreparedStatement oPrepStatement = oConexion.prepareStatement(" INSERT INTO usuario (email,nombre,password,apellido,fecha_nacimiento,celular,nombre_ciudad) VALUES (?,?,?,?,?,?,?)");
+		oPrepStatement.setString(1, sEmail);
+		oPrepStatement.setString(2, sNombre);
+		oPrepStatement.setString(3, sPassword);
+		oPrepStatement.setString(4, sApellido);
+		oPrepStatement.setString(5, sFechaNacimiento);
+		oPrepStatement.setString(6, sCelular);
+		oPrepStatement.setString(7, sCiudad);
+		oPrepStatement.execute();
+		resultado=true;
+		/*
+		CallableStatement oCallStatement = oConexion.prepareCall("{call login (?,?)}");
+		oCallStatement.setString(1, sNombre;
+		*/
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return resultado;
 	}
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Reporte implements Serializable {
 	private String fecha;
-	private byte[] foto;
 	private String email;
 	private String tipo;
 	private double latitud;					
@@ -23,12 +22,7 @@ public class Reporte implements Serializable {
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-	public byte[] getFoto() {
-		return foto;
-	}
-	public void setFoto(byte[] foto) {
-		this.foto = foto;
-	}
+	
 	public String getEmail() {
 		return email;
 	}
